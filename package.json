@@ -1,0 +1,14 @@
+{
+  "name": "php-voting-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/shinnosuke1465/php-voting-app.git",
+  "author": "Shinnosuke1465 <s.shinno0605@icloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "node_modules/.bin/sass app/htdocs/css/style.scss:app/htdocs/css/style.css"
+  },
+  "dependencies": {
+    "sass": "^1.63.6"
+  }
+}
