@@ -6,7 +6,8 @@
   "author": "Shinnosuke1465 <s.shinno0605@icloud.com>",
   "license": "MIT",
   "scripts": {
-    "build": "node_modules/.bin/sass app/htdocs/css/style.scss:app/htdocs/css/style.css"
+    "build": "node_modules/.bin/sass app/htdocs/css/style.scss:app/htdocs/css/style.css",
+    "watch": "node_modules/.bin/sass --watch app/htdocs/css/style.scss:app/htdocs/css/style.css"
   },
   "dependencies": {
     "sass": "^1.63.6"

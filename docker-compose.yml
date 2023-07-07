@@ -13,8 +13,7 @@ services:
       #appフォルダの中身をと/php-boting-app/appにbindマウントしてpcでappのファイルの変更をコンテナに反映させる
       #appフォルダをwebサーバから見れるようにするための設定
       - ./app:/php-voting-app/app
-      - "./docker/web/httpd.conf:/etc/httpd/conf/httpd.conf"
-    depends_on:
+     depends_on:
       - db
 
   # dbサーバーを起動するための設定
@@ -27,7 +26,7 @@ services:
       MYSQL_DATABASE: votingapp
       TZ: "Asia/Tokyo"
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - app_data:/var/lib/mysql #mysqlのデータを保存するための領域
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf #mysqlの設定の定義

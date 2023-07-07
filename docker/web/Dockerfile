@@ -1,9 +1,12 @@
 #使用するdocker imageの指定。php:8.0.16-apacheを使用して環境を構築。phpとapacheを同時に入れる
 FROM php:8.0.16-apache
 
+RUN a2enmod rewrite
+
 ENV TZ Asia/Tokyo
 
-#webに公開するファイルの指定APACHE_DOCUMENT_ROOTとは/var/www/html
+
+# webに公開するファイルの指定APACHE_DOCUMENT_ROOTとは/var/www/html。下記で/var/www/htmlを/php/voting-app/htdocsに置換している
 ENV APACHE_DOCUMENT_ROOT /php-voting-app/app/htdocs
 
 #コンテナ内の作業用ディレクトリの作成と指定
@@ -24,11 +27,13 @@ RUN apt-get update \
     vim \
   && docker-php-ext-install pdo_mysql
 
-#下記のコードを配布することで誰でも同じ環境を設定できる
+#/etc/apache2/sites-available/*.confの全ての設定ファイルの/var/www/htmlをAPACHE_DOCUMENT_ROOTに置換する
 RUN sed -ri -e \
   's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
   /etc/apache2/sites-available/*.conf
 
 RUN sed -ri -e \
-  's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \ 
+  's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
   /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+
