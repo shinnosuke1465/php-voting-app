@@ -5,7 +5,6 @@ RUN a2enmod rewrite
 
 ENV TZ Asia/Tokyo
 
-
 # webに公開するファイルの指定APACHE_DOCUMENT_ROOTとは/var/www/html。下記で/var/www/htmlを/php/voting-app/htdocsに置換している
 ENV APACHE_DOCUMENT_ROOT /php-voting-app/app/htdocs
 
@@ -36,4 +35,6 @@ RUN sed -ri -e \
   's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
   /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-
+RUN apt-get update \
+    && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo_mysql pdo_pgsql

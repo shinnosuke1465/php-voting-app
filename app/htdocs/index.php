@@ -3,6 +3,16 @@
 // dirname(__DIR__)...今いるディレクトリの親のディレクトリを返す（appディレクトリ）
 require_once( dirname(__DIR__) .'/config/config.php');
 
+// Model
+require_once(SOURCE_BASE . 'models/user.model.php');
+
+// . DB
+require_once(SOURCE_BASE . 'db/datasource.php');
+require_once(SOURCE_BASE . 'db/user.query.php');
+
+use DB\UserQuery;
+$result = UserQuery::fetchById('test');
+var_dump($result);
 
 require_once(SOURCE_BASE . 'partials/header.php');
 
@@ -21,7 +31,7 @@ function route($rpath, $method) {
         $rpath = 'home';
     }
 
-// localhost/loginとurlを叩いたとき$targetFile = app/htdocs/php/controllers/login.php
+// localhost/loginとurlを叩いたとき($targetFile = app/htdocs/php/controllers/login.php
     $targetFile = SOURCE_BASE . "controllers/{$rpath}.php";
 
 // ファイルが存在しなかったとき404ページを表示
@@ -47,4 +57,5 @@ function route($rpath, $method) {
 // }
 
 require_once(SOURCE_BASE . 'partials/footer.php');
-?>
+
+
