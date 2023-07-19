@@ -3,6 +3,7 @@ namespace db;
 
 use PDO;
 
+// DB(votingapp)に格納された値をPDOでDBに接続してfetchで取ってくるクラス
 class DataSource
 {
 

@@ -1,18 +1,28 @@
 <?php
+session_start();
 
 // dirname(__DIR__)...今いるディレクトリの親のディレクトリを返す（appディレクトリ）
 require_once( dirname(__DIR__) .'/config/config.php');
 
+// Library
+require_once(SOURCE_BASE . 'libs/helper.php');
+require_once SOURCE_BASE . 'libs/auth.php';
+
+
 // Model
+require_once(SOURCE_BASE . 'models/abstract.model.php');
 require_once(SOURCE_BASE . 'models/user.model.php');
 
 // . DB
 require_once(SOURCE_BASE . 'db/datasource.php');
 require_once(SOURCE_BASE . 'db/user.query.php');
 
+
+
 use DB\UserQuery;
 $result = UserQuery::fetchById('test');
 var_dump($result);
+
 
 require_once(SOURCE_BASE . 'partials/header.php');
 
@@ -43,6 +53,7 @@ function route($rpath, $method) {
 //ファイルが存在した時はそのままphpファイルを表示する
     require_once $targetFile;
 
+//引数で渡した$method(POSTかGET)がPOSTだった場合controllerのphpファイルのPOST()メソッドを実行する
     $fn = "\\controller\\{$rpath}\\{$method}";
 
     $fn();

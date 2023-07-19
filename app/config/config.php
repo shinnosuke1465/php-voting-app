@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+define('CURRENT_URI', $_SERVER['REQUEST_URI']);
+
 // 現在のページのurlを取得
 // index.phpファイルを読み込んだとき(localhost)このconfig.phpがよばれるため、そのときのREQUEST_URIはlocalhostを含まない/となる
 // これでホスト名（例 : localhost）を含まないURL部分（例 : /）が取得可能
