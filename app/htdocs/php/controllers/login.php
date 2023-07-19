@@ -14,16 +14,14 @@ function post() {
   $pwd = get_param('pwd', '');
 
   if(Auth::login($id, $pwd)) {
-
-      // $user = UserModel::getSession();
-      // Msg::push(Msg::INFO, "{$user->nickname}さん、ようこそ。");
-      // redirect(GO_HOME);
       echo "認証成功";
-
+      redirect(GO_HOME);
+      // 認証成功するとtopページへ遷移する
+      // header('Location: /');
+      // die();
   } else {
-
     echo "認証失敗";
       // redirect(GO_REFERER);
-
+      redirect(GO_REFERER);
   }
 }

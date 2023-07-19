@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 
 // dirname(__DIR__)...今いるディレクトリの親のディレクトリを返す（appディレクトリ）
 require_once( dirname(__DIR__) .'/config/config.php');
