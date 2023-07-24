@@ -19,9 +19,11 @@ function get_param($key, $default_val, $is_post = true)
 function redirect($path)
 {
 
+  //redirect関数が呼び出されて（login.phpで呼び出されている）その引数がGO_HOMEだったときから文字（topページへのurl）を返す
   if ($path === GO_HOME) {
     $path = get_url('');
   } else if ($path === GO_REFERER) {
+  //ひとつ前のリクエスト(loginフォームのurl)を返す
     $path = $_SERVER['HTTP_REFERER'];
   } else {
     $path = get_url($path);
