@@ -8,6 +8,7 @@ require_once( dirname(__DIR__) .'/config/config.php');
 // Library
 require_once(SOURCE_BASE . 'libs/helper.php');
 require_once SOURCE_BASE . 'libs/auth.php';
+require_once SOURCE_BASE . 'libs/router.php';
 
 
 // Model
@@ -21,14 +22,10 @@ require_once(SOURCE_BASE . 'libs/message.php');
 require_once(SOURCE_BASE . 'db/datasource.php');
 require_once(SOURCE_BASE . 'db/user.query.php');
 
+use function lib\route;
 
-
-use DB\UserQuery;
-$result = UserQuery::fetchById('test');
-var_dump($result);
-
-
-require_once(SOURCE_BASE . 'partials/header.php');
+try{
+    require_once(SOURCE_BASE . 'partials/header.php');
 
 // localhost/loginとurlを叩いたとき$rpathにloginが格納される
 // $_SERVER['REQUEST_URI']からBASE_CONTEXT_PATHにマッチした/をから文字に変換（除去）する
@@ -40,29 +37,6 @@ $method = strtolower($_SERVER['REQUEST_METHOD']);
 // 下記のroute関数を呼び出す
 route($rpath, $method);
 
-function route($rpath, $method) {
-    if($rpath === '') {
-        $rpath = 'home';
-    }
-
-// localhost/loginとurlを叩いたとき($targetFile = app/htdocs/php/controllers/login.php
-    $targetFile = SOURCE_BASE . "controllers/{$rpath}.php";
-
-// ファイルが存在しなかったとき404ページを表示
-    if(!file_exists($targetFile)) {
-        require_once SOURCE_BASE . "views/404.php";
-        return;
-    }
-
-//ファイルが存在した時はそのままphpファイルを表示する
-    require_once $targetFile;
-
-//引数で渡した$method(POSTかGET)がPOSTだった場合controllerのphpファイルのPOST()メソッドを実行する
-    $fn = "\\controller\\{$rpath}\\{$method}";
-
-    $fn();
-}
-
 // if($_SERVER['REQUEST_URI'] === '/login') {
 //     require_once SOURCE_BASE . 'controllers/login.php';
 // } elseif($_SERVER['REQUEST_URI'] === '/register') {
@@ -72,5 +46,10 @@ function route($rpath, $method) {
 // }
 
 require_once(SOURCE_BASE . 'partials/footer.php');
+} catch(Throwable $e) {
+    die('<h1>何かがすごくおかしいようです</h1>');
+}
+
+
 
 

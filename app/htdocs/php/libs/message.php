@@ -2,6 +2,7 @@
 namespace lib;
 
 use model\AbstractModel;
+use Throwable;
 
 //sessionにメッセージを格納して表示するクラス。sessionに格納しないとメッセージが表示されない（205講義参考）
 class Msg extends AbstractModel{
@@ -42,16 +43,21 @@ class Msg extends AbstractModel{
 
     // $msgsの連想配列に登録されたmsg（値）を取り出す関数
     public static function flush() {
-      $msgs_with_type = static::getSessionAndFlush() ?? [];
+      try {
+        $msgs_with_type = static::getSessionAndFlush() ?? [];
 
-      foreach($msgs_with_type as $type => $msgs){
-        if($type === static::DEBUG && !DEBUG){
-          continue;
+        foreach($msgs_with_type as $type => $msgs){
+          if($type === static::DEBUG && !DEBUG){
+            continue;
+          }
+  
+          foreach($msgs as $msg){
+            echo "<div>{$msg}</div>";
+          }
         }
-
-        foreach($msgs as $msg){
-          echo "<div>{$msg}</div>";
-        }
+      } catch (Throwable $e){
+        Msg::push(Msg::DEBUG, $e->getMessage());
+        Msg::push(Msg::DEBUG, 'Msg::flushで例外が発生しました');
       }
     }
 
