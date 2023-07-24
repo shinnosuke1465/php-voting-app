@@ -8,8 +8,12 @@
     <!-- <link rel="stylesheet" href="<?php echo BASE_CSS_PATH ?>sample.css"> -->
 </head>
 <body>
-<?php 
+<?php
     use lib\Auth;
+    use lib\Msg;
+
+    //msgクラスのflushメソッドが実行されてlogin.phpで実行された Msg::push(Msg::INFO,'認証成功');のコードの認証成功が表示される
+    Msg::flush();
 
     if(Auth::isLogin()) {
         echo "ログイン中です";

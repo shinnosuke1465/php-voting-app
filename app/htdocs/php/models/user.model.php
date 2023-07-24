@@ -1,7 +1,8 @@
 <?php 
 namespace model;
 
-// userの情報を定義するクラス。userの情報をインスタンスオブジェクトとしてまとめることでユーザ登録メソッドなどにオブジェクトを渡すだけでいいのでコードがスッキリする
+// register.phpで入力されたuserの情報を保持するクラス。
+//userの情報をインスタンスオブジェクト（$user = new UserModel)としてまとめることでユーザ登録メソッド(controllers>register.php Auth::regist($user))などにオブジェクトを渡すだけでいいのでコードがスッキリする
 class UserModel extends AbstractModel{
 
     public string $id;

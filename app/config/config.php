@@ -18,5 +18,8 @@ define('SOURCE_BASE', dirname(__DIR__) . '/htdocs/php/');
 //リダイレクト処理
 define('GO_HOME', 'home');
 define('GO_REFERER', 'referer');
+
+//こちらがtrueになっている時のみデバッグのメッセージ表示
+define('DEBUG', true);
 ?>
 
