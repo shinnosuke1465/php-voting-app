@@ -2,6 +2,7 @@
 namespace controller\register;
 
 use lib\Auth;
+use lib\Msg;
 use model\UserModel;
 
 function get(){
@@ -19,11 +20,9 @@ function post() {
   //registメソッドの中でユーザーを登録し正常に登録できたらtrueを返す
   if(Auth::regist($user)) {
       // $user = UserModel::getSession(); auth.phpのログイン状態の確認クラスで記述
-      // Msg::push(Msg::INFO, "{$user->nickname}さん、ようこそ。");
+      Msg::push(Msg::INFO, "{$user->nickname}さん、ようこそ。");
       redirect(GO_HOME);
-      echo "登録成功";
   } else {
-      echo "登録失敗";
       redirect(GO_REFERER);
   }
 }

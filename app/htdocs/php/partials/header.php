@@ -15,9 +15,4 @@
     //msgクラスのflushメソッドが実行されてlogin.phpで実行された Msg::push(Msg::INFO,'認証成功');のコードの認証成功が表示される
     Msg::flush();
 
-    if(Auth::isLogin()) {
-        echo "ログイン中です";
-    } else {
-        echo "ログインしていまっせん";
-    }
     ?>

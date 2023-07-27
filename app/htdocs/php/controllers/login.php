@@ -3,6 +3,7 @@ namespace controller\login;
 
 use lib\Auth;
 use lib\Msg;
+use model\UserModel;
 
 function get(){
   require_once(dirname(__DIR__) . "/views/login.php");
@@ -16,7 +17,9 @@ function post() {
   $pwd = get_param('pwd', '');
 
   if(Auth::login($id, $pwd)) {
-      Msg::push(Msg::INFO,'認証成功');
+
+    $user = UserModel::getSession();
+      Msg::push(Msg::INFO,"{$user->nickname}さん、ようこそ");
       redirect(GO_HOME);
       //libs>helper.phpで定義されている関数
       // 認証成功するとtopページへ遷移する
@@ -24,7 +27,6 @@ function post() {
       // die();
   } else {
     Msg::push(Msg::ERROR,'認証失敗');
-      // redirect(GO_REFERER);
       redirect(GO_REFERER);
   }
 }

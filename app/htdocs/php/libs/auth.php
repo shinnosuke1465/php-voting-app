@@ -31,10 +31,10 @@ class Auth
           // $_SESSION['user'] = $user;
           UserModel::setSession($user);
         } else {
-          echo 'パスワードが一致しません';
+          Msg::push(Msg::ERROR, 'パスワードが一致しません');
         }
       } else {
-        echo 'userが見つかりません';
+        Msg::push(Msg::ERROR, 'ユーザーが見つかりません');
       }
     } catch (Throwable $e) {
 
@@ -64,7 +64,7 @@ class Auth
       $exist_user = UserQuery::fetchById($user->id);
 
       if (!empty($exist_user)) {
-        echo "ユーザーが既に存在します";
+        Msg::push(Msg::ERROR, 'ユーザーが既に存在します');
         return false;
       }
       //ユーザーidが登録されていなかったらinsertメソッドでDBにidとpwdとnicknameを登録して成功したらtureを返す
