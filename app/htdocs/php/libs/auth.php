@@ -105,38 +105,18 @@ class Auth
     }
   }
 
-  // public static function isLogin()
-  // {
-  //     try {
+  public static function logout() {
+      try {
 
-  //         $user = UserModel::getSession();
-  //     } catch (Throwable $e) {
+          UserModel::clearSession();
 
-  //         UserModel::clearSession();
-  //         Msg::push(Msg::DEBUG, $e->getMessage());
-  //         return false;
-  //     }
+      } catch (Throwable $e) {
 
-  //     if (isset($user)) {
-  //         return true;
-  //     } else {
-  //         return false;
-  //     }
+          Msg::push(Msg::DEBUG, $e->getMessage());
+          return false;
 
-  // }
+      }
 
-  // public static function logout() {
-  //     try {
-
-  //         UserModel::clearSession();
-
-  //     } catch (Throwable $e) {
-
-  //         Msg::push(Msg::DEBUG, $e->getMessage());
-  //         return false;
-
-  //     }
-
-  //     return true;
-  // }
+      return true;
+  }
 }
