@@ -15,6 +15,10 @@ class Auth
   public static function login($id, $pwd)
   {
     try {
+      if(!(UserModel::validateId($id)
+          * UserModel::validatePwd($pwd))){
+          return false;
+      }
       $is_success = false;
 
       $user = UserQuery::fetchById($id);
@@ -47,6 +51,13 @@ class Auth
   public static function regist($user)
   {
     try {
+      //$user->isValidId()...(UserModelクラス)登録ページで入力されたpwdとidのチェック関数でfalseが帰ってきた場合if文の中身が実行される
+      if(!($user->isValidId()
+          * $user->isValidPwd()
+          * $user->isValidNickname())){
+          return false;
+      }
+
       //処理が成功したかのフラグ。成功したらreturnでtrueにして返す
       $is_success = false;
 
