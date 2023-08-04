@@ -18,14 +18,25 @@ require_once(SOURCE_BASE . 'models/user.model.php');
 //Message
 require_once(SOURCE_BASE . 'libs/message.php');
 
-// . DB
+//  DB
 require_once(SOURCE_BASE . 'db/datasource.php');
 require_once(SOURCE_BASE . 'db/user.query.php');
+
+//Partials
+require_once(SOURCE_BASE . 'partials/header.php');
+require_once(SOURCE_BASE . 'partials/footer.php');
+
+//View
+require_once(SOURCE_BASE . "views/login.php");
+require_once(SOURCE_BASE . "views/register.php");
+
+
 
 use function lib\route;
 
 try{
-    require_once(SOURCE_BASE . 'partials/header.php');
+
+    \Partials\header();
 
 // localhost/loginとurlを叩いたとき$rpathにloginが格納される
 // $_SERVER['REQUEST_URI']からBASE_CONTEXT_PATHにマッチした/をから文字に変換（除去）する
@@ -44,8 +55,7 @@ route($rpath, $method);
 // } elseif($_SERVER['REQUEST_URI'] === '/') {
 //     require_once SOURCE_BASE . 'controllers/home.php';
 // }
-
-require_once(SOURCE_BASE . 'partials/footer.php');
+\Partials\footer();
 } catch(Throwable $e) {
     die('<h1>何かがすごくおかしいようです</h1>');
 }

@@ -6,10 +6,10 @@ use lib\Msg;
 use model\UserModel;
 
 function get(){
-  require_once(dirname(__DIR__) . "/views/register.php");
+  \view\register\index();
 }
 function post() {
-  // login.phpのidとpassword入力欄で渡された値を受け取って変数に宣言
+  // register.phpのidとpassword入力欄で渡された値を受け取って変数に宣言
   //値が入力されていなかった時デフォルトで空文字を宣言
   //UserModelクラス..値を保持してAuth::regist()の引数で渡しやすくするためのクラス
   $user = new UserModel;

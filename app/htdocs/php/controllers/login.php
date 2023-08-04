@@ -6,7 +6,7 @@ use lib\Msg;
 use model\UserModel;
 
 function get(){
-  require_once(dirname(__DIR__) . "/views/login.php");
+  \view\login\index();
 }
 
 function post() {
@@ -26,7 +26,6 @@ function post() {
       // header('Location: /');
       // die();
   } else {
-    Msg::push(Msg::ERROR,'認証失敗');
       redirect(GO_REFERER);
   }
 }

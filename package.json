@@ -10,6 +10,7 @@
     "watch": "node_modules/.bin/sass --watch app/htdocs/css/style.scss:app/htdocs/css/style.css"
   },
   "dependencies": {
+    "bootstrap": "^5.3.1",
     "sass": "^1.63.6"
   }
 }

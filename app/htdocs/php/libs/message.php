@@ -46,15 +46,24 @@ class Msg extends AbstractModel{
       try {
         $msgs_with_type = static::getSessionAndFlush() ?? [];
 
+        echo '<div id="messages">';
+
         foreach($msgs_with_type as $type => $msgs){
           if($type === static::DEBUG && !DEBUG){
             continue;
           }
-  
+
+          // 渡ってきた$typeによってエラーの色を変える
+          $color = $type === static::INFO ? 'alert-info' : 'alert-danger';
+
           foreach($msgs as $msg){
-            echo "<div>{$msg}</div>";
+            // ログイン失敗したらalertで赤色でエラーを表示
+            echo "<div class='alert alert-danger'>{$msg}</div>";
           }
         }
+
+        echo '</div>';
+        
       } catch (Throwable $e){
         Msg::push(Msg::DEBUG, $e->getMessage());
         Msg::push(Msg::DEBUG, 'Msg::flushで例外が発生しました');
