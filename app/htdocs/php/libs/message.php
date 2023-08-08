@@ -53,12 +53,12 @@ class Msg extends AbstractModel{
             continue;
           }
 
-          // 渡ってきた$typeによってエラーの色を変える
+          // 渡ってきた$typeがstaticのINFOの時$colorにalert-info格納そうでない時alert-danger格納
           $color = $type === static::INFO ? 'alert-info' : 'alert-danger';
 
           foreach($msgs as $msg){
             // ログイン失敗したらalertで赤色でエラーを表示
-            echo "<div class='alert alert-danger'>{$msg}</div>";
+            echo "<div class='alert $color'>{$msg}</div>";
           }
         }
 

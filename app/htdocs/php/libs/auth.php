@@ -119,4 +119,10 @@ class Auth
 
       return true;
   }
+  public static function requireLogin(){
+    if(!static::isLogin()){
+      Msg::push(Msg::ERROR,'ログインしてください');
+      redirect('login');
+    }
+  }
 }

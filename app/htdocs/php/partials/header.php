@@ -31,8 +31,7 @@ function header()
                     </a>
                     <div class="col-md-auto">
                         <?php if (Auth::isLogin()) : ?>
-                            <?php // ログインしているとき 
-                            ?>
+                            <?php // ログインしているとき?>
                             <a href="<?php the_url('topic/create'); ?>" class="btn btn-primary mr-2">投稿</a>
                             <a href="<?php the_url('topic/archive'); ?>" class="mr-2">過去の投稿</a>
                             <a href="<?php the_url('logout'); ?>">ログアウト</a>

@@ -23,13 +23,18 @@ function route($rpath, $method)
     //ファイルが存在した時はそのままphpファイルを表示する
     require_once $targetFile;
 
+    $rpath = str_replace('/', '\\', $rpath);
+
     //引数で渡した$method(POSTかGET)がPOSTだった場合controllerのphpファイルのPOST()メソッドを実行する
     $fn = "\\controller\\{$rpath}\\{$method}";
 
     $fn();
   } catch (Throwable $e) {
-    Msg::push(Msg::DEBIG, $e->getMessage());
+    Msg::push(Msg::DEBUG, $e->getMessage());
     Msg::push(Msg::ERROR, '何かがおかしいようです');
     require_once(SOURCE_BASE . 'views/404.php');
+    echo '<p>エラーメッセージ: ' . $e->getMessage() . '</p>';
+    echo '<p>エラーが発生したファイル: ' . $e->getFile() . '</p>';
+    echo '<p>エラーが発生した行: ' . $e->getLine() . '</p>';
   }
 }

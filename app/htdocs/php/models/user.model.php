@@ -41,7 +41,7 @@ class UserModel extends AbstractModel{
     }
 
     //auth.phpで呼び出している
-    public function isValidID() {
+    public function isValidId() {
         return static::validateId($this->id);
     }
 
