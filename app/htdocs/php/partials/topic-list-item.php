@@ -2,7 +2,7 @@
 
 namespace partials;
 
-function topic_list_item($topic, $title_url)
+function topic_list_item($topic, $title_url, $with_status)
 {
   $published_label = $topic->published ? '公開' : '非公開';
   $published_cls = $topic->published ? 'badge-primary' : 'badge-danger';
@@ -10,7 +10,9 @@ function topic_list_item($topic, $title_url)
   <li class="topic row bg-white shadow-sm mb-3 rounded p-3">
     <div class="col-md d-flex align-items-center">
       <h2 class="mb-2 mb-md-0">
+        <?php if($with_status) :?>
         <span class="badge mr-1 align-bottom<?php echo $published_cls;?>"><?php echo $published_label;?></span>
+        <?php endif; ?>
         <a class="text-body" href="<?php echo $title_url;?>"><?php echo $topic->title;?></a>
       </h2>
     </div>

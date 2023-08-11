@@ -1,4 +1,5 @@
 <?php
+
 namespace db;
 
 use db\DataSource;
@@ -8,36 +9,84 @@ use model\UserModel;
 // DB(votingapp)にから値を取ってくるためのsql文を作成してDataSourceに作成したsql文を渡すクラス（DBからsql文を使って指定したテーブルの行をとってくるクラス）
 class TopicQuery
 {
-  //topicsテーブルからuser_idに紐づく行を取得する
-    public static function fetchByUserId($user)
-    {
-        if(!$user->isValidId()){
-          return false;
-        }
-        $db = new DataSource;
-        $sql = 'select * from votingapp.topics where user_id = :id and del_flg != 1 order by id desc;';
-
-        $result = $db->select($sql, [
-            ':id' => $user->id
-        ], DataSource::CLS, TopicModel::class);
-
-        return $result;
+  //topicsテーブルからuser_idに紐づく行を取得すしてarchive.phpに渡す
+  public static function fetchByUserId($user)
+  {
+    if (!$user->isValidId()) {
+      return false;
     }
-    // ユーザー登録機能。$userはuser情報が格納されたオブジェクト（models>user.modelクラスのインスタンス）
-    // public static function insert($user)
-    // {
+    $db = new DataSource;
+    $sql = 'select * from topics where user_id = :id and del_flg != 1 order by id desc;';
 
-    //     $db = new DataSource;
-    //     $sql = 'insert into users(id, pwd, nickname) values (:id, :pwd, :nickname)';
+    //new DataSourceでDBに接続。selectメソッドで値を取得。引数の意味（sql文,idをprepare構文で指定,DataSource::CLSでclassで値を取得することを指定。topicModel::classの雛形に取得した値を打ち込む）
+    $result = $db->select($sql, [
+      ':id' => $user->id
+    ], DataSource::CLS, TopicModel::class);
 
-    //     //パスワードのハッシュ化。第一引数...ハッシュ化したい文字。第二引数...どのようなアルゴリズム（ハッシュ関数）を使うか
-    //     $user->pwd = password_hash($user->pwd, PASSWORD_DEFAULT);
+    return $result;
+  }
 
-    //     //executeは処理が成功するとtrueを返す
-    //     return $db->execute($sql, [
-    //         ':id' => $user->id,
-    //         ':pwd' => $user->pwd,
-    //         ':nickname' => $user->nickname,
-    //     ]);
-    // }
+  //topicsテーブル情報とtopicsのidに結合させたuserテーブルのnicknameを取得する
+  /*
+テーブルの内部結合（INNER JOIN）
+ select * from テーブル１
+ inner join テーブル２
+ on テーブル１.値が一致する属性 = テーブル２.値が一致する属性;
+*/
+// .   topicsテーブルのuser_id(test)とuserテーブルのid(test)が一致するuserテーブルのnicknameを表示
+//      on t.user_id = u.id
+//
+// .     del_flgが1でないものを表示する
+//        where t.del_flg != 1
+//            and u.del_flg != 1
+  public static function fetchPublishedTopics()
+  {
+    $db = new DataSource;
+    $sql = '
+        select
+            t.*, u.nickname
+        from topics t
+        inner join users u
+            on t.user_id = u.id
+        where t.del_flg != 1
+            and u.del_flg != 1
+            and t.published = 1
+        order by t.id desc
+        ';
+
+    $result = $db->select($sql, [], DataSource::CLS, TopicModel::class);
+
+    return $result;
+  }
+
+
+    //詳細ページでその記事のidに紐づくtopicsテーブル情報（記事は一つだけ取得することになる）とtopicsのidに結合させたuserテーブルのnicknameを取得する
+  public static function fetchById($topic) {
+
+    if(!$topic->isValidId()) {
+        return false;
+    }
+
+    $db = new DataSource;
+    $sql = '
+    select
+        t.*, u.nickname
+    from topics t
+    inner join users u
+        on t.user_id = u.id
+    where t.id = :id
+        and t.del_flg != 1
+        and u.del_flg != 1
+        and t.published = 1
+    order by t.id desc
+    ';
+
+    // 記事のidを引数で渡ってきたtopicのidにバインドして一つのレコードだけ取得
+    $result = $db->selectOne($sql, [
+        ':id' => $topic->id
+    ], DataSource::CLS, TopicModel::class);
+
+    return $result;
+
+}
 }

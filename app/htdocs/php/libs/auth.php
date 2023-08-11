@@ -119,6 +119,7 @@ class Auth
 
       return true;
   }
+  //ログインしていなかったらloginページにリダイレクト。
   public static function requireLogin(){
     if(!static::isLogin()){
       Msg::push(Msg::ERROR,'ログインしてください');

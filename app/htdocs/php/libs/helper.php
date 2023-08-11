@@ -2,13 +2,15 @@
 
 //controllers>login.phpファイル
 // function post(){
+  //POST(form)にidが設定されている時そのidを$idに格納する。されていなかった場合から文字を設定する
 //     $id = $_POST['id'] ?? '';
 // }
 // 上記のlogin.phpのpwdとid入力欄から記述された値を変数に宣言するコードを関数として定義し直したもの
-function get_param($key, $default_val, $is_post = true)
-{
+function get_param($key, $default_val, $is_post = true) {
 
+  // $is_postがtrueの場合$_POSTのスーパーグローバル（formで入力された値）を使用する。falseの場合$_GETを使用する。
   $arry = $is_post ? $_POST : $_GET;
+  // $id = $_POST['id'] ?? '';下記のコードと同じ意味
   return $arry[$key] ?? $default_val;
 }
 
