@@ -25,6 +25,7 @@ class DataSource
         }
     }
 
+    // データベースからデータを取得
     public function select($sql = "", $params = [], $type = '', $cls = '')
     {
 
@@ -39,6 +40,7 @@ class DataSource
         }
     }
 
+    // データの更新、挿入、削除
     public function execute($sql = "", $params = [])
     {
 

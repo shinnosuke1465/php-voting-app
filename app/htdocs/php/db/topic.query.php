@@ -77,7 +77,6 @@ class TopicQuery
     where t.id = :id
         and t.del_flg != 1
         and u.del_flg != 1
-        and t.published = 1
     order by t.id desc
     ';
 
@@ -89,4 +88,57 @@ class TopicQuery
     return $result;
 
 }
+
+// 記事のviewを増やす機能
+public static function incrementViewCount($topic){
+  if(!$topic->isValidId()){
+    return false;
+  }
+  $db = new DataSource;
+
+  $sql = 'update topics set views = views + 1 where id = :id;';
+
+  return $db->execute($sql,[
+    ':id' => $topic->id
+  ]);
+}
+
+//記事を編集する際、記事のidとそれに紐ずくuserのid(test)をwhereで条件指定してレコードが取れてきたら編集できるという意味
+public static function isUserOwnTopic($topic_id, $user)
+{
+
+    if (!(TopicModel::validateId($topic_id) && $user->isValidId())) {
+        return false;
+    }
+
+    $db = new DataSource;
+    $sql = '
+    select count(1) as count from votingapp.topics t
+    where t.id = :topic_id
+        and t.user_id = :user_id
+        and t.del_flg != 1;
+    ';
+
+    $result = $db->selectOne($sql, [
+        ':topic_id' => $topic_id,
+        ':user_id' => $user->id,
+    ]);
+
+    //dbから取得したカウントが空ではなく0でもなかった場合trueを返す
+    return !empty($result) && $result['count'] != 0;
+}
+
+public static function update($topic)
+{
+
+    $db = new DataSource;
+    $sql = 'update topics set published = :published, title = :title where id = :id';
+
+    return $db->execute($sql, [
+        ':published' => $topic->published,
+        ':title' => $topic->title,
+        ':id' => $topic->id,
+    ]);
+}
+
 }

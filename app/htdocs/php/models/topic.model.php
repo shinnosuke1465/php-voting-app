@@ -23,6 +23,10 @@ class TopicModel extends AbstractModel
     public function isValidId() {
 
         return true;
-        
+
+    }
+
+    public static function validateId($val) {
+        return true;
     }
 }

@@ -14,13 +14,15 @@ function get() {
       // $topicのidにGET(url)で渡ってきたtopic_idの値（/topic/detail?topic_id=3の3）を格納
     $topic->id = get_param('topic_id', null, false);
 
+    TopicQuery::incrementViewCount($topic);
+
     //上記のコードでgetで渡ってきた一つの記事だけの情報をDBから取得
     $fetchedTopic = TopicQuery::fetchById($topic);
     // commentテーブルの全てのコメントを取得。のちにループ文で回して表示する
     $comments = CommentQuery::fetchByTopicId($topic);
 
     //トピックの値が取れてこなかった時の処理
-    if(!$fetchedTopic) {
+    if(empty($fetchedTopic) || !$fetchedTopic->published) {
         Msg::push(Msg::ERROR, 'トピックが見つかりません。');
         redirect('404');
     }
