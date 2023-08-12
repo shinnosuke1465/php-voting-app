@@ -128,17 +128,73 @@ public static function isUserOwnTopic($topic_id, $user)
     return !empty($result) && $result['count'] != 0;
 }
 
+// 記事の編集（edit.php）で呼び出されformで入力された変更内容をDBに更新するメソッド
 public static function update($topic)
 {
+
+  //値のチェック
+  if (!($topic->isValidId()
+  * $topic->isValidTitle()
+  * $topic->isValidPublished())) {
+  return false;
+}
 
     $db = new DataSource;
     $sql = 'update topics set published = :published, title = :title where id = :id';
 
+    //execute＝dbに登録するメソッド
     return $db->execute($sql, [
         ':published' => $topic->published,
         ':title' => $topic->title,
         ':id' => $topic->id,
     ]);
+}
+
+// 投稿作成画面（create.php）で呼び出されformで入力された変更内容をDBに更新するメソッド
+public static function insert($topic, $user)
+{
+    //値のチェック
+    if (!($user->isValidId()
+        * $topic->isValidTitle()
+        * $topic->isValidPublished())) {
+        return false;
+    }
+
+    $db = new DataSource;
+    //idはオートインクリメントで自動的に割り当てられるため指定しなくていい
+    $sql = 'insert into topics(title, published, user_id) values (:title, :published, :user_id)';
+
+    return $db->execute($sql, [
+        ':title' => $topic->title,
+        ':published' => $topic->published,
+        ':user_id' => $user->id,
+    ]);
+}
+
+//topicテーブルのlikesかdislikesに+1をする機能
+public static function incrementLikesOrDislikes($comment){
+  if (!($comment->isValidTopicId()
+  * $comment->isValidAgree())) {
+  return false;
+}
+
+$db = new DataSource;
+
+//agreeが1だった場合likesを+1
+//0だった場合dislikesを+1
+if($comment->agree) {
+
+  $sql = 'update topics set likes = likes + 1 where id = :topic_id';
+
+} else {
+
+  $sql = 'update topics set dislikes = dislikes + 1 where id = :topic_id';
+
+}
+
+return $db->execute($sql, [
+  ':topic_id' => $comment->topic_id
+]);
 }
 
 }

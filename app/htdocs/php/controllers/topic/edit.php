@@ -17,6 +17,16 @@ function get()
   //ログインしていない状態で/topic/archive.phpとurlを叩くとloginページにリダイレクトされる
   Auth::requireLogin();
 
+    //編集がバリデーションによって失敗した時入力していた値をそのままにする処理(post()の登録失敗した時にsessionに保存した情報を取得してsession上のデータを削除)
+    $topic = TopicModel::getSessionAndFlush();
+
+    // 上記のコードが実装された時そのままindexを表示
+    if(!empty($topic)) {
+      \view\topic\edit\index($topic, true);
+      // このコード以下の処理は必要ないためここでストップさせる
+      return;
+  }
+
   // url(/topic/edit?topic_id=4)で飛んできたtopicのidを格納するモデルを定義
   $topic = new TopicModel;
   $topic->id = get_param('topic_id', null, false);
@@ -30,7 +40,7 @@ function get()
   //記事詳細ページでその記事のidに紐づくtopicsテーブル情報（記事は一つだけ取得することになる）とtopicsのidに結合させたuserテーブルのnicknameを取得する
   $fetchedTopic = TopicQuery::fetchById($topic);
 
-  \view\topic\edit\index($fetchedTopic);
+  \view\topic\edit\index($fetchedTopic, true);
 }
 
 function post()
@@ -63,7 +73,9 @@ function post()
 } else {
 
     Msg::push(Msg::ERROR, 'トピックの更新に失敗しました。');
+       // formで飛んできた情報をsessionに保存
     TopicModel::setSession($topic);
+        // 上記のget()が呼ばれる
     redirect(GO_REFERER);
 
 }

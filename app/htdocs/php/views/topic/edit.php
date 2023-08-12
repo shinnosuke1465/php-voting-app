@@ -2,10 +2,12 @@
 
 namespace view\topic\edit;
 
-function index($topic)
+function index($topic, $is_edit)
 {
+  // 第二引数で渡ってきた値がtrueならトピックの編集。falseならトピックの作成
+  $header_title = $is_edit ? 'トピックの編集' : 'トピックの作成' ;
 ?>
-  <h1 class="h2 mb-3">トピック作成</h1>
+  <h1 class="h2 mb-3"><?php echo $header_title; ?></h1>
 
   <div class="bg-white p-4 shadow-sm mx-auto rounded">
     <form class="d-flex flex-column gap-3" action="<?php CURRENT_URI; ?>" method="POST">

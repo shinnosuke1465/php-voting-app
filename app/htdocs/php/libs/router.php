@@ -32,7 +32,7 @@ function route($rpath, $method)
   } catch (Throwable $e) {
     Msg::push(Msg::DEBUG, $e->getMessage());
     Msg::push(Msg::ERROR, '何かがおかしいようです');
-    require_once(SOURCE_BASE . 'views/404.php');
+    redirect('404');
     echo '<p>エラーメッセージ: ' . $e->getMessage() . '</p>';
     echo '<p>エラーが発生したファイル: ' . $e->getFile() . '</p>';
     echo '<p>エラーが発生した行: ' . $e->getLine() . '</p>';
